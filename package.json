@@ -1,0 +1,35 @@
+{
+  "name": "spendlitapi",
+  "version": "1.0.0",
+  "description": "A spending and spliting web app.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bensonybs/spendlitAPI.git"
+  },
+  "author": "bensonybs, shorty60",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bensonybs/spendlitAPI/issues"
+  },
+  "homepage": "https://github.com/bensonybs/spendlitAPI#readme",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.20.2",
+    "cors": "^2.8.5",
+    "dayjs": "^1.11.7",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "faker": "^5.5.3",
+    "jsonwebtoken": "^9.0.0",
+    "mysql2": "^3.2.0",
+    "passport": "^0.6.0",
+    "passport-jwt": "^4.0.1",
+    "passport-local": "^1.0.0",
+    "sequelize": "^6.29.3",
+    "sequelize-cli": "^6.6.0"
+  }
+}
