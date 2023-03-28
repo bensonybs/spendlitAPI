@@ -15,12 +15,12 @@ module.exports = (sequelize, DataTypes) => {
       RecordCategory.hasMany(models.Record, {
         foreignKey: 'subCategoryId',
         onUpdate: 'CASCADE',
-        onDelete: 'CASCADE'
+        onDelete: 'RESTRICT'
       })
       RecordCategory.hasMany(models.RecordSubCategory, {
         foreignKey: 'categoryId',
         onUpdate: 'CASCADE',
-        onDelete: 'CASCADE'   
+        onDelete: 'RESTRICT'
       })
     }
   }

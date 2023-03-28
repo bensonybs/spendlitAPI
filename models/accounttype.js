@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
       AccountType.hasMany(models.Account, {
         foreignKey: 'accountTypeId',
         onUpdate: 'CASCADE',
-        onDelete: 'CASCADE'
+        onDelete: 'RESTRICT'
     })
     }
   }

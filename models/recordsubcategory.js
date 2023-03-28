@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
       RecordSubCategory.hasMany(models.Record, {
         foreignKey: 'subCategoryId',
         onUpdate: 'CASCADE',
-        onDelete: 'CASCADE'
+        onDelete: 'RESTRICT'
       })
       RecordSubCategory.belongsTo(models.User, { foreignKey: 'userId' })
       RecordSubCategory.belongsTo(models.RecordCategory, { foreignKey: 'categoryId' })

@@ -2,26 +2,44 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('RecordCategories', {
+    await queryInterface.createTable('Accounts', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
+      userId: {
+        allowNull: false,
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'Users',
+          key: 'id',
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE'
+      },
       name: {
         allowNull: false,
         type: Sequelize.STRING
       },
-      userId: {
+      initialAmount: {
         allowNull: false,
-        type: Sequelize.INTEGER
-      },
-      budget: {
+        defaultValue: 0.00,
         type: Sequelize.DECIMAL(10, 2)
       },
-      isDefault: {
-        type: Sequelize.BOOLEAN
+      description: {
+        type: Sequelize.STRING
+      },
+      accountTypeId: {
+        allowNull: false,
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'AccountTypes',
+          key: 'id',
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'RESTRICT'
       },
       isDeleted: {
         defaultValue: false,
@@ -38,6 +56,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('RecordCategories');
+    await queryInterface.dropTable('Accounts');
   }
 };

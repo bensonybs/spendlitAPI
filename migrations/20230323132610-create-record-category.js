@@ -2,32 +2,33 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Accounts', {
+    await queryInterface.createTable('RecordCategories', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      userId: {
-        allowNull: false,
-        type: Sequelize.INTEGER
-      },
       name: {
         allowNull: false,
         type: Sequelize.STRING
       },
-      initialAmount: {
+      userId: {
         allowNull: false,
-        defaultValue: 0.00,
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'Users',
+          key: 'id',
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE'
+      },
+      budget: {
         type: Sequelize.DECIMAL(10, 2)
       },
-      description: {
-        type: Sequelize.STRING
-      },
-      accountTypeId: {
-        allowNull: false,
-        type: Sequelize.INTEGER
+      isDefault: {
+        defaultValue: false,
+        type: Sequelize.BOOLEAN
       },
       isDeleted: {
         defaultValue: false,
@@ -44,6 +45,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Accounts');
+    await queryInterface.dropTable('RecordCategories');
   }
 };
