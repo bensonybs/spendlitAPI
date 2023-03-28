@@ -1,5 +1,5 @@
 'use strict';
-
+const accountTypes = require('./data/account-types.json').accountTypes
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
@@ -14,7 +14,6 @@ module.exports = {
      * }], {});
     */
     // Add column value before been inserted
-    const accountTypes = require('./data/account-types.json').accountTypes
     accountTypes.forEach(type => {
       type.createdAt = new Date()
       type.updatedAt = new Date()
