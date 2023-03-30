@@ -88,3 +88,6 @@ typings/
 
 # file temp
 temp/
+
+# Request test file (For VS Code extension: REST Client)
+*.rest
