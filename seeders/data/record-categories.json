@@ -1,0 +1,170 @@
+{
+  "categories": {
+    "income": [
+      {
+        "name": "一般收入",
+        "subCategories": [
+          {"name": "薪資", "isDefault": true},
+          {"name": "點數回饋"},
+          {"name": "禮券"},
+          {"name": "其他"}
+        ]
+      },
+      {
+        "name": "投資收入",
+        "subCategories": [
+          {"name": "定存"},
+          {"name": "股票"},
+          {"name": "期貨"},
+          {"name": "基金"},
+          {"name": "其他"}
+        ]
+      }
+    ],
+    "expense": [
+      {
+        "name": "餐飲食品",
+        "subCategories": [
+          {"name": "早餐", "isDefault": true},
+          {"name": "午餐"},
+          {"name": "晚餐"},
+          {"name": "飲料酒水"},
+          {"name": "點心零嘴"},
+          {"name": "水果"},
+          {"name": "食材"}
+        ]
+      },
+      {
+        "name": "日常居家",
+        "subCategories": [
+          {"name": "日常用品"},
+          {"name": "家電用品"},
+          {"name": "房租"},
+          {"name": "管理費"},
+          {"name": "水費"},
+          {"name": "電費"},
+          {"name": "瓦斯費"},
+          {"name": "電話費"},
+          {"name": "網路費"},
+          {"name": "修繕費"},
+          {"name": "訂閱"},
+          {"name": "傢俱"}
+        ]
+      },
+      {
+        "name": "美容服飾",
+        "subCategories": [
+          {"name": "衣服"},
+          {"name": "鞋子"},
+          {"name": "包包"},
+          {"name": "配件"},
+          {"name": "剪髮"},
+          {"name": "保養"}
+        ]
+      },
+      {
+        "name": "交通運輸",
+        "subCategories": [
+          {"name": "公車"},
+          {"name": "捷運"},
+          {"name": "火車"},
+          {"name": "高鐵"},
+          {"name": "計程車"},
+          {"name": "租車"}
+        ]
+      },
+      {
+        "name": "汽機車",
+        "subCategories": [
+          {"name": "加油"},
+          {"name": "停車費"},
+          {"name": "過路費"},
+          {"name": "維修保養"},
+          {"name": "車險"},
+          {"name": "車稅"},
+          {"name": "罰單"}
+        ]
+      },
+      {
+        "name": "人情交際",
+        "subCategories": [
+          {"name": "送禮請客"},
+          {"name": "應酬交際"},
+          {"name": "婚喪喜慶"}
+        ]
+      },
+      {
+        "name": "娛樂休閒",
+        "subCategories": [
+          {"name": "電影"},
+          {"name": "唱歌"},
+          {"name": "運動"},
+          {"name": "展覽"},
+          {"name": "玩具"},
+          {"name": "電腦遊戲"},
+          {"name": "書籍"}
+        ]
+      },
+      {
+        "name": "學習進修",
+        "subCategories": [
+          {"name": "學雜費"},
+          {"name": "補習費"},
+          {"name": "書籍費"}
+        ]
+      },
+      {
+        "name": "醫療保健",
+        "subCategories": [
+          {"name": "藥品"},
+          {"name": "健康檢查"},
+          {"name": "掛號費"},
+          {"name": "住院費"},
+          {"name": "健保費"}
+        ]
+      },
+      {
+        "name": "理財投資",
+        "subCategories": [
+          {"name": "股票"},
+          {"name": "定存"},
+          {"name": "期貨"},
+          {"name": "基金"}
+        ]
+      },
+      {
+        "name": "貸款",
+        "subCategories": [
+          {"name": "房貸"},
+          {"name": "車貸"},
+          {"name": "學貸"}
+        ]
+      },
+      {
+        "name": "費用",
+        "subCategories": [
+          {"name": "手續費"}
+        ]
+      },
+      {
+        "name": "其他",
+        "subCategories": [
+          {"name": "雜支"},
+          {"name": "捐款"},
+          {"name": "遺失"}
+        ]
+      }
+    ],
+    "transfer": [
+      {
+        "name": "轉帳",
+        "subCategories": [
+          {"name": "一般轉帳"},
+          {"name": "借出代墊"},
+          {"name": "繳費"},
+          {"name": "其他"}
+        ]
+      }
+    ]
+  }
+}

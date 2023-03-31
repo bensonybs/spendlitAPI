@@ -4,7 +4,8 @@
   "description": "A spending and spliting web app.",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon app.js"
   },
   "repository": {
     "type": "git",
@@ -31,5 +32,8 @@
     "passport-local": "^1.0.0",
     "sequelize": "^6.29.3",
     "sequelize-cli": "^6.6.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.22"
   }
 }
