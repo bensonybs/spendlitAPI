@@ -47,5 +47,24 @@ const accountController = {
       next(error)
     }
   },
+  postAccounts: async (req, res, next) => {
+    try {
+      const userId = req.user.id
+      const { name, initialAmount, type, description } = req.body
+
+      await Account.create({
+        userId,
+        name,
+        initialAmount,
+        description,
+        accountTypeId: type,
+      })
+      return res
+        .status(200)
+        .json({ status: 'success', message: 'Account created.' })
+    } catch (err) {
+      next(err)
+    }
+  },
 }
 module.exports = accountController
