@@ -66,5 +66,26 @@ const accountController = {
       next(err)
     }
   },
+  deleteAccount: async (req, res, next) => {
+    try {
+      const id = req.params.id
+      const userId = req.user.id
+
+      const account = await Account.findOne({ where: { id, userId } })
+      if (!account)
+        return res
+          .status(404)
+          .json({ status: 'error', message: 'User or account not found!' })
+      
+      // 若在資料庫有找到account，刪除該筆account
+      await account.destroy()
+      return res
+        .status(200)
+        .json({ status: 'success', message: 'Account deleted.' })
+      
+    } catch (error) {
+      next(error)
+    }
+  },
 }
 module.exports = accountController
