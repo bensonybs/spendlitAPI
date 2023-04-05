@@ -1,4 +1,4 @@
-const { Account } = require('../models')
+const { Account, AccountType } = require('../models')
 
 const accountController = {
   getAccounts: async (req, res, next) => {
@@ -13,6 +13,17 @@ const accountController = {
         status: 'succcess',
         data: accounts,
       })
+    } catch (error) {
+      next(error)
+    }
+  },
+  getAccountTypes: async (req, res, next) => {
+    try {
+      const accountTypes = await AccountType.findAll({
+        attributes: ['id', 'name'],
+        raw: true,
+      })
+      return res.status(200).json({ status: 'succcess', data: accountTypes })
     } catch (error) {
       next(error)
     }
