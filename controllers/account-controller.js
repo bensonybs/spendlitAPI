@@ -66,5 +66,78 @@ const accountController = {
       next(err)
     }
   },
+  deleteAccount: async (req, res, next) => {
+    try {
+      const id = req.params.id
+      const userId = req.user.id
+
+      const account = await Account.findOne({ where: { id, userId } })
+      if (!account)
+        return res
+          .status(404)
+          .json({ status: 'error', message: 'User or account not found!' })
+
+      // 若在資料庫有找到account，刪除該筆account
+      await account.destroy()
+      return res
+        .status(200)
+        .json({ status: 'success', message: 'Account deleted.' })
+    } catch (error) {
+      next(error)
+    }
+  },
+  putAccount: async (req, res, next) => {
+    try {
+      const id = req.params.id
+      if (!id)
+        return res
+          .status(400)
+          .json({ status: 'error', message: 'Please enter account id.' })
+      const userId = req.user.id
+      const { name, initialAmount, type, description } = req.body // 通過middleware驗證的欄位
+
+      const account = await Account.findOne({
+        where: { id, userId },
+        include: {
+          model: AccountType,
+          attributes: ['name'],
+        },
+        attributes: [
+          'id',
+          'name',
+          'initialAmount',
+          'accountTypeId',
+          'description',
+          'updatedAt',
+        ],
+      })
+      if (!account)
+        return res
+          .status(404)
+          .json({ status: 'error', message: 'User or account not found!' })
+
+      // 如果該account存在且req.body內容通過驗證
+      const accountUpdated = await account.update({
+        name,
+        initialAmount,
+        accountTypeId: type,
+        description,
+      })
+
+      // 整理回傳格式
+      const datas = {
+        accountId: accountUpdated.id,
+        name: accountUpdated.name,
+        initialAmount: accountUpdated.initialAmount,
+        accontType: accountUpdated.AccountType.name,
+        updatedAt: accountUpdated.updatedAt,
+      }
+      return res
+        .status(200)
+        .json({ status: 'success', data: { account: datas } })
+    } catch (error) {
+      next(error)
+    }
+  },
 }
 module.exports = accountController

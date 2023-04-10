@@ -23,7 +23,7 @@ const fieldValidator = {
 }
 
 // 新增帳戶的表單驗證欄位
-const accountValidations = [
+const accountValidationFields = [
   fieldValidator.name,
   fieldValidator.initialAmount,
   fieldValidator.type,
@@ -31,13 +31,11 @@ const accountValidations = [
 
 module.exports = {
   // 新增帳戶的表單驗證middleware
-  addAccountValidator: async (req, res, next) => {
+  accountValidator: async (req, res, next) => {
     try {
       // 平行驗證(同時驗證所有欄位)
       await Promise.all(
-        accountValidations.map(addNewAccountField =>
-          addNewAccountField.run(req)
-        )
+        accountValidationFields.map(accountField => accountField.run(req))
       ) // run每個field的validation chain，chain is serial
 
       // 取得驗證結果，如果結果有錯，回傳錯誤訊息給前端
@@ -69,4 +67,5 @@ module.exports = {
       next(error)
     }
   },
+
 }
