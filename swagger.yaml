@@ -75,7 +75,7 @@ paths:
       summary: '使用者登入'
       description: |
         用戶使用帳號密碼登入 <br>
-        帳號、密碼為空白或錯誤則回傳 406
+        帳號、密碼為空白或錯誤則回傳 401
       requestBody:
         content:
           application/json:
@@ -99,8 +99,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/SuccessUser'
-        '406': 
-          $ref: '#/components/responses/406_NotAcceptable'
+        '401': 
+          $ref: '#/components/responses/401_Unauthorized'
         '500':
           $ref: '#/components/responses/500_ServerError'
   /users:
