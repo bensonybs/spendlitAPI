@@ -1,0 +1,730 @@
+openapi: 3.0.0
+servers:
+  - description: Local
+    url: http://localhost:3000/api/v1
+  - description: Zeabur
+    url: https://spendlit.zeabur.app/api/v1
+info:
+  description: Backend API document of SpendLit app
+  version: "1.0.0"
+  title: SpendLit API
+  contact:
+    name: Benson Ye
+    email: yehbo0921@gmail.com
+    url: https://github.com/bensonybs/spendlitAPI
+tags:
+  - name: Users
+    description: 使用者操作
+  - name: Accounts
+    description: 記帳帳戶操作
+  - name: Records
+    description: 帳目紀錄操作 
+paths:
+  /register:
+    post:
+      tags: 
+        - Users
+      summary: '使用者註冊'
+      description: |
+        使用者註冊一個新帳號 <br>
+        缺少欄位、密碼與確認密碼不同、
+        名字超過 30 字、Email 格式不對、Email已註冊會回傳 406
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required: 
+                - name
+                - email
+                - password
+                - checkPassword
+              properties:
+                name:
+                  type: string
+                  description: '使用者名稱'
+                email:
+                  type: string
+                  description: '使用者信箱'
+                password:
+                  type: string
+                  description: '使用者密碼'
+                checkPassword:
+                  type: string
+                  description: '使用者密碼確認'
+            example:
+              name: 'Mario'
+              email: mario@spendlit.com
+              password: impassword
+              checkPassword: impassword
+      responses:
+        '200':
+          description: '使用者註冊成功'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessUser'
+        '406': 
+          $ref: '#/components/responses/406_NotAcceptable'
+        '500':
+          $ref: '#/components/responses/500_ServerError'
+  /login:
+    post:
+      tags:
+        - Users
+      summary: '使用者登入'
+      description: |
+        用戶使用帳號密碼登入 <br>
+        帳號、密碼為空白或錯誤則回傳 406
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - email
+                - password
+              type: object
+              properties:
+                email:
+                  type: string
+                  example: 'mario@spendlit.com'
+                password:
+                  type: string
+                  example: 'impassword'
+        description: '使用者登入資料'
+      responses:
+        '200':
+          description: '使用者登入成功'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessUser'
+        '406': 
+          $ref: '#/components/responses/406_NotAcceptable'
+        '500':
+          $ref: '#/components/responses/500_ServerError'
+  /users:
+    get:
+      tags:
+        - Users
+      summary: '取得使用者資料'
+      security:
+        - bearerAuth: []
+      description: |
+        取得 JWT 使用者資料 <br>
+        加上 userId 的 query 則可取得其他使用者基本資料 <br>
+        找不到使用者回傳 404 <br>
+      parameters:
+        - $ref: '#/components/parameters/UserId'
+      responses:
+        '200':
+          description: 請求成功
+          content:
+            application/json:
+              example:
+                status: success
+                data:
+                  user:
+                    id: 1
+                    name: default_user
+                    email: user@default.com
+        '401':
+          $ref: '#/components/responses/401_Unauthorized'
+        '404':
+          $ref: '#/components/responses/404_NotFound'
+        '500':
+          $ref: '#/components/responses/500_ServerError'
+    put:
+      tags:
+        - Users
+      summary: '變更使用者資料'
+      security:
+        - bearerAuth: []
+      description: |
+        變更 JWT 使用者資料 <br>
+        只能變更該 JWT 自己的基本資料 <br>
+        缺少欄位、密碼與確認密碼不同、
+        名字超過 30 字、Email 格式不對、Email已註冊會回傳 406
+      requestBody:
+        description: 使用者變更資料
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+                - email
+                - password
+                - checkPassword
+              properties:
+                name:
+                  type: string
+                  description: '使用者名稱'
+                email:
+                  type: string
+                  description: '使用者信箱'
+                password:
+                  type: string
+                  description: '使用者密碼'
+                checkPassword:
+                  type: string
+                  description: '使用者密碼確認'
+            example:
+              name: 'Luigi'
+              email: luigi@spendlit.com
+              password: passwordchange
+              checkPassword: passwordchange
+      responses:
+        '200':
+          description: '變更成功'
+          content:
+            application/json:
+              example:
+                status: success
+                data:
+                  user:
+                    id: 3
+                    name: Luigi
+                    email: luigi@spendlit.com
+        '401':
+          $ref: '#/components/responses/401_Unauthorized'
+        '406':
+          $ref: '#/components/responses/406_NotAcceptable'
+        '500':
+          $ref: '#/components/responses/500_ServerError'
+    delete:
+      tags:
+        - Users
+      summary: '刪除使用者資料'
+      security:
+        - bearerAuth: []
+      description: |
+        刪除 JWT 使用者帳號 <br>
+        使用者的所有記帳帳戶、收支、拆帳群組皆會刪除 <br>
+      responses:
+        '200':
+          description: '刪除成功'
+          content:
+            application/json:
+              example:
+                status: 'success'
+                message: 'User deleted'
+        '401':
+          $ref: '#/components/responses/401_Unauthorized'
+        '500':
+          $ref: '#/components/responses/500_ServerError'
+  /accounts/types:
+    get:
+      tags:
+        - Accounts
+      summary: '取得記帳帳戶類型 (Account Type)'
+      security:
+        - bearerAuth: []
+      description: '帳戶類型只有內建預設選項，不開放使用者自由新增非預設選項的帳戶類型'
+      responses:
+        '200':
+          $ref: '#/components/responses/200_AccountType'
+        '401':
+          $ref: '#/components/responses/401_Unauthorized'
+        '500':
+          $ref: '#/components/responses/500_ServerError'
+  /accounts:
+    get:
+      tags:
+        - Accounts
+      summary: 'Working On 剩 Response example_查看帳戶總覽'
+      security:
+        - bearerAuth: []
+      description: |
+        取得使用者所有記帳帳戶總覽。包含各個帳戶餘額、所有帳戶總額(總資產)、
+        負債、淨資產。
+      responses:
+        '200':
+          description: 請求成功
+          content:
+            application/json:
+              example:
+                status: Working on
+                message: Working on
+        '401':
+          $ref: '#/components/responses/401_Unauthorized'
+        '500':
+          $ref: '#/components/responses/500_ServerError'
+    post:
+      tags:
+        - Accounts
+      summary: '新增記帳帳戶'
+      security:
+        - bearerAuth: []
+      description: | 
+        帳戶種類: 現金、銀行、信用卡、簽帳金融卡、行動支付、
+        投資理財、借入、借出、其他 <br>
+        name, description 限制 30 字，若超出回傳 406 <br>
+        initialAmount 限制小數點兩位，超出則四捨五入 <br>
+      requestBody:
+        content: 
+          application/json:
+            schema:
+              type: object
+              required: 
+                - name
+                - accountTypeId
+                - initialAmount
+              properties:
+                name:
+                  type: string
+                  description: '帳戶名稱'
+                  example: '我的錢包'
+                accountTypeId:
+                  type: number
+                  description: '帳戶類別 id'
+                  example: 1
+                initialAmount:
+                  type: number
+                  description: '帳戶初始金額'
+                  example: 22000
+                description:
+                  type: string
+                  description: '備註'
+                  example: '這是我的錢包，錢好少'
+      responses:
+        '200':
+          description: 請求成功
+          content:
+            application/json:
+              example:
+                status: success
+                message: 'Account created'
+        '401':
+          $ref: '#/components/responses/401_Unauthorized'
+        '406': 
+          $ref: '#/components/responses/406_NotAcceptable'
+        '500':
+          $ref: '#/components/responses/500_ServerError'
+  /accounts/{id}:
+    put:
+      tags:
+        - Accounts
+      summary: '編輯記帳帳戶'
+      security:
+        - bearerAuth: []
+      description: | 
+        變更帳戶的名稱 (name)、類別 (accountTypeId)、
+        初始金額 (initialAmount)、備註 (description)<br>
+        initialAmount 限制小數點兩位，超出則四捨五入 <br>
+        name, description 限制 30 字，若超出回傳 406 <br>
+        id 不是該 JWT 使用者擁有回傳 401 <br>
+      parameters:
+        - $ref: '#/components/parameters/AccountId_Required'
+      requestBody:
+        content: 
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: '帳戶名稱'
+                accountTypeId:
+                  type: number
+                  description: '帳戶類別 id'
+                initialAmount:
+                  type: number
+                  description: '帳戶初始金額'
+                description:
+                  type: string
+                  description: '備註'
+            examples:
+              Full edit:
+                value:
+                  name: '我的銀行'
+                  accountTypeId: 2
+                  initialAmount: 15000
+                  description: '變更為銀行帳戶'
+              Partial edit:
+                value:
+                  initialAmount: 50000
+                  description: '這是我的錢包，錢變多了'
+      responses:
+        '200':
+          description: 請求成功
+          content:
+            application/json:
+              example:
+                status: success
+                data: 
+                  account:
+                    accountId: 1
+                    name: '我的銀行'
+                    initialAmount: 15000
+                    accountType: '銀行'
+                    updatedAt: '2023-02-18T09:30:57.000Z'
+        '401':
+          $ref: '#/components/responses/401_Unauthorized'
+        '406': 
+          $ref: '#/components/responses/406_NotAcceptable'
+        '500':
+          $ref: '#/components/responses/500_ServerError'
+    delete:
+      tags:
+        - Accounts
+      summary: '刪除記帳帳戶'
+      security:
+        - bearerAuth: []
+      description: | 
+        所有相關的紀錄 (Records) 都會一起刪除<br>
+        id 不是該 JWT 使用者擁有回傳 401 <br>
+      parameters:
+        - in: path
+          name: id
+          description: 'account id'
+          required: true
+          schema:
+            type: number
+      responses:
+        '200':
+          description: 請求成功
+          content:
+            application/json:
+              example:
+                status: success
+                message: 'Account deleted'
+        '401':
+          $ref: '#/components/responses/401_Unauthorized'
+        '500':
+          $ref: '#/components/responses/500_ServerError'
+  # /accounts/{id}/records:
+  #   get:
+  #     tags:
+  #       - Records
+  #     summary: 'Working'
+  /records:
+  #   get:
+  #     tags:
+  #       - Records
+  #     summary: 'Working'
+    post:
+      tags:
+        - Records
+      summary: '新增一筆帳目紀錄'
+      security:
+        - bearerAuth: []
+      description: |
+        紀錄收入的話，只需要附上 toAccountId <br>
+        支出只需要附上 fromAccountId <br>
+        轉帳則兩個屬性都要附上 <br>
+        日期 (date) 格式為 yyyy/mm/dd <br>
+        金額 (amount) 限制小數點兩位，超出則四捨五入 <br>
+        備註 (description) 限制 30 字 <br>
+        id 不是該 JWT 使用者擁有回傳 401 <br>
+        格式不符回傳 406 <br>
+      requestBody:
+        content: 
+          application/json:
+            schema:
+              required:
+                - amount
+                - date
+                - categoryId
+                - subCategoryId
+              properties:
+                amount:
+                  type: number
+                  description: '金額'
+                date:
+                  type: string
+                  description: '日期'
+                fromAccountId:
+                  type: number
+                  description: '轉出帳戶 id'
+                toAccountId:
+                  type: number
+                  description: '轉入帳戶 id'
+                description:
+                  type: string
+                  description: '備註'
+                categoryId:
+                  type: number
+                  description: '帳目分類 id'
+                subCategoryId:
+                  type: number
+                  description: '帳目子分類 id'
+            examples:
+              Income:
+                value:
+                  amount: 22000
+                  date: 2023/01/01
+                  toAccountId: 1
+                  description: '一月薪水'
+                  categoryId: 1
+                  subCategoryId: 1
+              Expense:
+                value:
+                  amount: 15000
+                  date: 2023/01/01
+                  fromAccountId: 1
+                  description: '額外支出'
+                  categoryId: 1
+                  subCategoryId: 1
+              Transfer:
+                value:
+                  amount: 1000
+                  date: 2023/01/01
+                  fromAccountId: 1
+                  toAccountId: 2
+                  description: '轉帳'
+                  categoryId: 1
+                  subCategoryId: 1
+      responses:
+        '200':
+          description: 請求成功
+          content:
+            application/json:
+              example:
+                status: success
+                message: Record created
+        '401':
+          $ref: '#/components/responses/401_Unauthorized'
+        '406':
+          $ref: '#/components/responses/406_NotAcceptable'
+        '500':
+          $ref: '#/components/responses/500_ServerError'
+  /records/{id}:
+    put:
+      tags:
+        - Records
+      summary: '編輯一筆帳目紀錄'
+      security:
+        - bearerAuth: []
+      description: |
+        日期 (date) 格式為 yyyy/mm/dd <br>
+        金額 (amount) 限制小數點兩位，超出則四捨五入 <br>
+        備註 (description) 限制 30 字 <br>
+        id 不是該 JWT 使用者擁有回傳 401 <br>
+        找不到該帳目回傳 404 <br>
+        格式不符回傳 406 <br>
+      parameters:
+        - $ref: '#/components/parameters/RecordId_Required'
+      requestBody:
+        content: 
+          application/json:
+            schema:
+              type: object
+              properties:
+                amount:
+                  type: number
+                  description: '金額'
+                date:
+                  type: string
+                  description: '日期'
+                fromAccountId:
+                  type: number
+                  description: '轉出帳戶 id'
+                toAccountId:
+                  type: number
+                  description: '轉入帳戶 id'
+                description:
+                  type: string
+                  description: '備註'
+                categoryId:
+                  type: number
+                  description: '帳目分類 id'
+                subCategoryId:
+                  type: number
+                  description: '帳目子分類 id'
+            example:
+              amount: 500
+              date: '2023/12/31'
+              description: '變更金額及日期'
+      responses:
+        '200':
+          description: '請求成功'
+          content:
+            application/json:
+              example:
+                status: success
+                message: Record edited
+        '401':
+          $ref: '#/components/responses/401_Unauthorized'
+        '404':
+          $ref: '#/components/responses/404_NotFound'
+        '406':
+          $ref: '#/components/responses/406_NotAcceptable'
+        '500':
+          $ref: '#/components/responses/500_ServerError'
+    delete:
+      tags:
+        - Records
+      summary: '刪除一筆帳目紀錄'
+      security:
+        - bearerAuth: []
+      description: |
+        id 不是該 JWT 使用者擁有回傳 401 <br>
+        找不到該帳目回傳 404 <br>
+        格式不符回傳 406 <br>
+      parameters:
+        - $ref: '#/components/parameters/RecordId_Required'
+      responses:
+        '200':
+          description: '請求成功'
+          content:
+            application/json:
+              example:
+                status: success
+                message: Record deleted
+        '401':
+          $ref: '#/components/responses/401_Unauthorized'
+        '404':
+          $ref: '#/components/responses/404_NotFound'
+        '406':
+          $ref: '#/components/responses/406_NotAcceptable'
+        '500':
+          $ref: '#/components/responses/500_ServerError'
+  /records/categories:
+    get:
+      tags:
+        - Records
+      summary: '取得帳目紀錄分類 (Category)'
+      security:
+        - bearerAuth: []
+      description: | 
+        得到全部的分類 (支出、收入、轉帳的主類別跟子類別)<br>
+        id 不是該 JWT 使用者擁有回傳 401 <br>
+      responses:
+        '200':
+          description: 請求成功
+          content:
+            application/json:
+              example:
+                status: success
+                data:
+                  categories:
+                    income: []
+                    expense:
+                      - id: 1
+                        name: 飲食
+                        budget: 6000
+                        userId: 9
+                        isDefault: true
+                        subCategories:
+                          - id: 1
+                            name: 早餐
+                            isDefault: true
+                    transfer: []
+        '401':
+          $ref: '#/components/responses/401_Unauthorized'
+        '500':
+          $ref: '#/components/responses/500_ServerError'
+  # /records/categories/{id}/budgets:
+  #   get:
+  #     tags:
+  #       - Records
+  #     summary: 'Working'
+  #   post:
+  #     tags:
+  #       - Records
+  #     summary: 'Working'
+components:
+# Reusable components
+  securitySchemes:
+    bearerAuth: 
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  parameters:
+    UserId:
+      name: id
+      in: query
+      description: '使用者 id'
+      schema:
+        type: number
+        example: 1
+    AccountId_Required:
+      name: id
+      in: path
+      description: 'account id'
+      required: true
+      schema:
+        type: number
+    RecordId_Required:
+      name: id
+      in: path
+      description: 'record id'
+      required: true
+      schema:
+        type: number
+  responses:
+    200_AccountType:
+      description: '請求成功，取得記帳帳戶類型'
+      content:
+        application/json:
+          example:
+            status: success
+            data:
+              accountTypes:
+                - id: 1
+                  name: 現金
+                - id: 2
+                  name: 銀行
+                - id: 3
+                  name: 信用卡
+                - id: 4
+                  name: 簽帳金融卡
+                - id: 5
+                  name: 行動支付
+                - id: 6
+                  name: 投資理財
+                - id: 7
+                  name: 借入
+                - id: 8
+                  name: 借出
+                - id: 9
+                  name: 其他
+    401_Unauthorized:
+      description: '未授權'
+      content:
+        application/json:
+          example:
+            status: 'error'
+            message: 'Unauthorized'
+    404_NotFound:
+      description: '找不到該資源'
+      content:
+        application/json:
+          example:
+            status: 'error'
+            message: 'Not found'
+    406_NotAcceptable:
+      description: '缺少必要資料或資料有誤'
+      content: 
+        application/json:
+          example:
+            status: 'error'
+            message: 'Request not acceptable'
+    500_ServerError:
+      description: '其他伺服器錯誤'
+      content: 
+        application/json:
+          example:
+            status: 'error'
+            message: 'Internal server error'
+  schemas:
+    SuccessUser:
+      type: object
+      properties:
+        status:
+          example: 'success'
+        data:
+            type: object
+            properties:
+              token:
+                example: 'tokenpart1.tokenpart2.tokenpart3'
+              user:
+                type: object
+                properties:
+                  id:
+                    example: '1'
+                  name:
+                    example: 'Mario'
+                  email:
+                    example: 'mario@spendlit.com'
