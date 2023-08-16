@@ -16,19 +16,21 @@ module.exports = {
     ) // 取出Users的所有id
 
     const accounts = []
-    accountTypesId.forEach(accountTypeId => {
-      accounts.push(
-        ...Array.from({ length: DEFAULT_ACCOUNTS_EACH_TYPE }, () => ({
-          userId: usersId[0].id,
-          name: faker.lorem.words(1),
-          initialAmount: faker.datatype.number({ precision: 0.01 }),
-          description: faker.lorem.words(9),
-          accountTypeId: accountTypeId.id,
-          isDeleted: false,
-          createdAt: new Date(),
-          updatedAt: new Date(),
-        }))
-      )
+    usersId.forEach(user => {
+      accountTypesId.forEach(accountTypeId => {
+        accounts.push(
+          ...Array.from({ length: DEFAULT_ACCOUNTS_EACH_TYPE }, () => ({
+            userId: user.id,
+            name: faker.finance.accountName(),
+            initialAmount: faker.datatype.number({ precision: 0.01 }),
+            description: faker.lorem.words(9),
+            accountTypeId: accountTypeId.id,
+            isDeleted: false,
+            createdAt: new Date(),
+            updatedAt: new Date(),
+          }))
+        )
+      })
     })
     await queryInterface.bulkInsert('Accounts', accounts, {})
   },
