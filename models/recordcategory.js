@@ -11,6 +11,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      RecordCategory.belongsTo(models.RecordMainCategory, { foreignKey: 'mainCategoryId' })
       RecordCategory.belongsTo(models.User, { foreignKey: 'userId' })
       RecordCategory.hasMany(models.Record, {
         foreignKey: 'subCategoryId',
@@ -25,6 +26,7 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   RecordCategory.init({
+    mainCategoryId: DataTypes.INTEGER,
     name: DataTypes.STRING,
     userId: DataTypes.INTEGER,
     budget: DataTypes.DECIMAL,
