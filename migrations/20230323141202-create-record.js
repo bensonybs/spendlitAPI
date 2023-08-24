@@ -27,16 +27,6 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DECIMAL(10, 2)
       },
-      categoryId: {
-        allowNull: false,
-        type: Sequelize.INTEGER,
-        references: {
-          model: 'RecordCategories',
-          key: 'id',
-        },
-        onUpdate: 'CASCADE',
-        onDelete: 'RESTRICT'
-      },
       subCategoryId: {
         allowNull: false,
         type: Sequelize.INTEGER,

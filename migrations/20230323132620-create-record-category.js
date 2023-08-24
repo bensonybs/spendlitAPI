@@ -23,27 +23,6 @@ module.exports = {
         allowNull: false,
         type: Sequelize.STRING
       },
-      userId: {
-        allowNull: false,
-        type: Sequelize.INTEGER,
-        references: {
-          model: 'Users',
-          key: 'id',
-        },
-        onUpdate: 'CASCADE',
-        onDelete: 'CASCADE'
-      },
-      budget: {
-        type: Sequelize.DECIMAL(10, 2)
-      },
-      isDefault: {
-        defaultValue: false,
-        type: Sequelize.BOOLEAN
-      },
-      isDeleted: {
-        defaultValue: false,
-        type: Sequelize.BOOLEAN
-      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

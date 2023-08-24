@@ -12,7 +12,6 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       Record.belongsTo(models.User, { foreignKey: 'userId' })
-      Record.belongsTo(models.RecordCategory, { foreignKey: 'categoryId' })
       Record.belongsTo(models.RecordSubCategory, { foreignKey: 'subCategoryId' })
       Record.belongsTo(models.Account, { foreignKey: 'fromAccountId' })
       Record.belongsTo(models.Account, { foreignKey: 'toAccountId' })
@@ -22,7 +21,6 @@ module.exports = (sequelize, DataTypes) => {
     date: DataTypes.DATE,
     userId: DataTypes.INTEGER,
     amount: DataTypes.DECIMAL,
-    categoryId: DataTypes.INTEGER,
     subCategoryId: DataTypes.INTEGER,
     fromAccountId: DataTypes.INTEGER,
     toAccountId: DataTypes.INTEGER,

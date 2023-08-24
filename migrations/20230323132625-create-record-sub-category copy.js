@@ -13,16 +13,6 @@ module.exports = {
         allowNull: false,
         type: Sequelize.STRING
       },
-      userId: {
-        allowNull: false,
-        type: Sequelize.INTEGER,
-        references: {
-          model: 'Users',
-          key: 'id',
-        },
-        onUpdate: 'CASCADE',
-        onDelete: 'CASCADE'
-      },
       categoryId: {
         allowNull: false,
         type: Sequelize.INTEGER,
@@ -32,14 +22,6 @@ module.exports = {
         },
         onUpdate: 'CASCADE',
         onDelete: 'RESTRICT'
-      },
-      isDefault: {
-        defaultValue: false,
-        type: Sequelize.BOOLEAN
-      },
-      isDeleted: {
-        defaultValue: false,
-        type: Sequelize.BOOLEAN
       },
       createdAt: {
         allowNull: false,
