@@ -68,7 +68,7 @@ module.exports = {
 
   async down(queryInterface, Sequelize) {
     // Delete order matters since there are foreign key between tables
-    // await queryInterface.bulkDelete('RecordSubCategories', null, {})
+    await queryInterface.bulkDelete('RecordSubCategories', null, {})
     await queryInterface.bulkDelete('RecordCategories', null, {})
     await queryInterface.bulkDelete('RecordMainCategories', null, {})
 

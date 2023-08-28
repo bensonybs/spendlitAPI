@@ -6,7 +6,7 @@ module.exports = {
   async up(queryInterface, Sequelize) {
     const DEFAULT_ACCOUNTS_EACH_TYPE = 1
     const accountTypesId = await queryInterface.sequelize.query(
-      'SELECT id FROM Accounttypes;',
+      'SELECT id FROM AccountTypes;',
       { type: queryInterface.sequelize.QueryTypes.SELECT }
     ) // 取出accounttypes的所有id
 

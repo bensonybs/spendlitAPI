@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/bensonybs/spendlitAPI#readme",
   "dependencies": {
+    "@faker-js/faker": "^8.0.2",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.2",
     "cors": "^2.8.5",
@@ -37,7 +38,6 @@
     "yaml": "^2.3.1"
   },
   "devDependencies": {
-    "@faker-js/faker": "^7.6.0",
     "nodemon": "^2.0.22"
   }
 }
