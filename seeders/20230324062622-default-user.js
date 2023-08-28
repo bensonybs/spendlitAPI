@@ -1,6 +1,6 @@
 'use strict';
 const bcrypt = require('bcryptjs')
-const defaultUser = require('./data/default-users.json').user
+const Users = require('./data/default-users.json').users
 require('dotenv').config()
 
 /** @type {import('sequelize-cli').Migration} */
@@ -16,13 +16,12 @@ module.exports = {
      * }], {});
     */
     const DEFAULT_PASSWORD = process.env.DEFAULT_USER_PASSWORD
-    await queryInterface.bulkInsert('Users', [{
-      name: defaultUser.name,
-      email: defaultUser.email,
-      password: bcrypt.hashSync(DEFAULT_PASSWORD, 10),
-      createdAt: new Date(),
-      updatedAt: new Date()
-    }], {})
+    Users.forEach(user => {
+      user.password = bcrypt.hashSync(DEFAULT_PASSWORD, 10)
+      user.createdAt = new Date()
+      user.updatedAt = new Date()
+    })
+    await queryInterface.bulkInsert('Users', Users, {})
   },
 
   async down(queryInterface, Sequelize) {

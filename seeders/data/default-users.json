@@ -1,6 +1,12 @@
 {
-  "user": {
-    "name": "default_user",
-    "email": "user@default.com"
-  }
+  "users": [
+    {
+      "name": "default_user1",
+      "email": "user1@default.com"
+    },
+    {
+      "name": "default_user2",
+      "email": "user2@default.com"
+    }
+  ]
 }

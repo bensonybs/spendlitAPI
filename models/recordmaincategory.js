@@ -3,7 +3,7 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class RecordCategory extends Model {
+  class RecordMainCategory extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -11,20 +11,18 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      RecordCategory.belongsTo(models.RecordMainCategory, { foreignKey: 'mainCategoryId' })
-      RecordCategory.hasMany(models.RecordSubCategory, {
-        foreignKey: 'categoryId',
+      RecordMainCategory.hasMany(models.RecordCategory, {
+        foreignKey: 'mainCategoryId',
         onUpdate: 'CASCADE',
         onDelete: 'RESTRICT'
       })
     }
   }
-  RecordCategory.init({
-    mainCategoryId: DataTypes.INTEGER,
-    name: DataTypes.STRING,
+  RecordMainCategory.init({
+    name: DataTypes.STRING
   }, {
     sequelize,
-    modelName: 'RecordCategory',
+    modelName: 'RecordMainCategory',
   });
-  return RecordCategory;
+  return RecordMainCategory;
 };

@@ -1,14 +1,21 @@
 const dayjs = require('dayjs')
+const jwt = require('jsonwebtoken')
 
 const helper = {
-  cleanObject: obj => {
+  cleanUser: user => {
     // Delete and modify data from database
-    delete obj.password
-    delete obj.isDeleted
-    delete obj.createdAt
-    delete obj.updatedAt
+    delete user.password
+    delete user.isDeleted
+    delete user.createdAt
+    delete user.updatedAt
+
+    return user
+  },
+  signJWT: user => {
+    const expiration = { expiresIn: '7d' }
+    const token = jwt.sign(user, process.env.JWT_SECRET, expiration)
     
-    return obj
+    return token
   }
 }
 

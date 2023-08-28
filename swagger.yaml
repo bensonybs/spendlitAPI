@@ -75,7 +75,7 @@ paths:
       summary: '使用者登入'
       description: |
         用戶使用帳號密碼登入 <br>
-        帳號、密碼為空白或錯誤則回傳 406
+        帳號、密碼為空白或錯誤則回傳 401
       requestBody:
         content:
           application/json:
@@ -99,8 +99,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/SuccessUser'
-        '406': 
-          $ref: '#/components/responses/406_NotAcceptable'
+        '401': 
+          $ref: '#/components/responses/401_Unauthorized'
         '500':
           $ref: '#/components/responses/500_ServerError'
   /users:
@@ -232,7 +232,7 @@ paths:
     get:
       tags:
         - Accounts
-      summary: 'Working On 剩 Response example_查看帳戶總覽'
+      summary: '查看帳戶總覽'
       security:
         - bearerAuth: []
       description: |
@@ -244,8 +244,27 @@ paths:
           content:
             application/json:
               example:
-                status: Working on
-                message: Working on
+                status: success
+                data: 
+                  summary:
+                    totalAsset: 150000
+                    liablilities: 50000
+                    net: 100000
+                  accounts:
+                    - userId: 1
+                      accountId: 1
+                      name: '錢包'
+                      initialAmount: 6000
+                      balance: 5123
+                      description: '錢包裡的現金'
+                      accontType: '現金'
+                    - userId: 1
+                      accountId: 2
+                      name: '元大銀行'
+                      initialAmount: 500000
+                      balance: 863057
+                      description: '元大銀行'
+                      accontType: '銀行'
         '401':
           $ref: '#/components/responses/401_Unauthorized'
         '500':
@@ -313,7 +332,7 @@ paths:
         初始金額 (initialAmount)、備註 (description)<br>
         initialAmount 限制小數點兩位，超出則四捨五入 <br>
         name, description 限制 30 字，若超出回傳 406 <br>
-        id 不是該 JWT 使用者擁有回傳 401 <br>
+        id 不是該 JWT 使用者擁有也會回傳 406 <br>
       parameters:
         - $ref: '#/components/parameters/AccountId_Required'
       requestBody:
@@ -373,7 +392,7 @@ paths:
         - bearerAuth: []
       description: | 
         所有相關的紀錄 (Records) 都會一起刪除<br>
-        id 不是該 JWT 使用者擁有回傳 401 <br>
+        id 不是該 JWT 使用者擁有回傳 406 <br>
       parameters:
         - in: path
           name: id

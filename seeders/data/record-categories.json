@@ -4,7 +4,7 @@
       {
         "name": "一般收入",
         "subCategories": [
-          {"name": "薪資", "isDefault": true},
+          {"name": "薪資"},
           {"name": "點數回饋"},
           {"name": "禮券"},
           {"name": "其他"}
@@ -25,7 +25,7 @@
       {
         "name": "餐飲食品",
         "subCategories": [
-          {"name": "早餐", "isDefault": true},
+          {"name": "早餐"},
           {"name": "午餐"},
           {"name": "晚餐"},
           {"name": "飲料酒水"},

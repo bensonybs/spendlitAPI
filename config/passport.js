@@ -12,7 +12,7 @@ passport.use(new LocalStrategy(
   async (email, password, done) => {
     try {
       const user = await User.findOne({ where: { email } })
-      const message = 'Invalid email or password'
+      const message = 'Unauthorized'
 
       if (!user) { return done(null, false, { message }) }
       const isValidPassword = await bcrypt.compare(password, user.password)
@@ -35,7 +35,7 @@ passport.use(new JwtStrategy(
   async (jwtPaload, done) => {
     try {
       const user = await User.findByPk(jwtPaload.id)
-      const message = 'Invalid token'
+      const message = 'Unauthorized'
       if (!user) return done(null, false, { message })
 
       return done(null, user)

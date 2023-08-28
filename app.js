@@ -18,10 +18,10 @@ app.use(passport.initialize())
 // APIs routers
 app.use('/api/v1', routes)
 // APIs Document
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
+app.use('/api-docs-v1', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 // Test route for the service
 app.get('/', (req, res) => {
-  res.send('Hello world')
+  res.send('This is spendlit api speaking.')
 })
 
 app.listen(port, () => console.log(`Spendlit API listening on port http://localhost:${port}`))

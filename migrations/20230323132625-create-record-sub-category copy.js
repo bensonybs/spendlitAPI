@@ -2,7 +2,7 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('RecordCategories', {
+    await queryInterface.createTable('RecordSubCategories', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -13,26 +13,15 @@ module.exports = {
         allowNull: false,
         type: Sequelize.STRING
       },
-      userId: {
+      categoryId: {
         allowNull: false,
         type: Sequelize.INTEGER,
         references: {
-          model: 'Users',
+          model: 'RecordCategories',
           key: 'id',
         },
         onUpdate: 'CASCADE',
-        onDelete: 'CASCADE'
-      },
-      budget: {
-        type: Sequelize.DECIMAL(10, 2)
-      },
-      isDefault: {
-        defaultValue: false,
-        type: Sequelize.BOOLEAN
-      },
-      isDeleted: {
-        defaultValue: false,
-        type: Sequelize.BOOLEAN
+        onDelete: 'RESTRICT'
       },
       createdAt: {
         allowNull: false,
@@ -45,6 +34,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('RecordCategories');
+    await queryInterface.dropTable('RecordSubCategories');
   }
 };

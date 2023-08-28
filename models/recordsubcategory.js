@@ -16,16 +16,12 @@ module.exports = (sequelize, DataTypes) => {
         onUpdate: 'CASCADE',
         onDelete: 'RESTRICT'
       })
-      RecordSubCategory.belongsTo(models.User, { foreignKey: 'userId' })
       RecordSubCategory.belongsTo(models.RecordCategory, { foreignKey: 'categoryId' })
     }
   }
   RecordSubCategory.init({
     name: DataTypes.STRING,
-    userId: DataTypes.INTEGER,
     categoryId: DataTypes.INTEGER,
-    isDefault: DataTypes.BOOLEAN,
-    isDeleted: DataTypes.BOOLEAN
   }, {
     sequelize,
     modelName: 'RecordSubCategory',
