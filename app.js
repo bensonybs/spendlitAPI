@@ -8,11 +8,13 @@ const YAML = require('yaml')
 
 const routes = require('./routes')
 const passport = require('./config/passport')
+const cors = require('cors')
 const swaggerFile = fs.readFileSync('./swagger.yaml', 'utf-8')
 const swaggerDocument = YAML.parse(swaggerFile)
 const app = express()
 const port = process.env.PORT || 3000
 
+app.use(cors())
 app.use(express.json())
 app.use(passport.initialize())
 // APIs routers
