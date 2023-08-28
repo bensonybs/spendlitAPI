@@ -23,7 +23,7 @@ app.use('/api/v1', routes)
 app.use('/api-docs-v1', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 // Test route for the service
 app.get('/', (req, res) => {
-  res.send('This is spendlit api speaking.')
+  res.send('This is spendlit api speaking, go back to <a href="https://github.com/bensonybs/spendlitAPI">Github</a>')
 })
 
 app.listen(port, () => console.log(`Spendlit API listening on port http://localhost:${port}`))
